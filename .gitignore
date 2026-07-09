@@ -1,4 +1,13 @@
-# Logs
+*.tar.gz
+node_modules/
+.env
+
+# Ignore sample apps you aren't using
+fabric-samples/auction-*/
+fabric-samples/token-*/
+fabric-samples/asset-transfer-abac/
+fabric-samples/asset-transfer-events/
+fabric-samples/asset-transfer-private-data/# Logs
 logs
 *.log
 npm-debug.log*

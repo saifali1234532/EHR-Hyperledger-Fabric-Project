@@ -17,9 +17,9 @@ function printHelp() {
     println
     println "    Flags:"
     println "    Used with \033[0;32mnetwork.sh prereq\033[0m:"
-    println "    -i     FabricVersion (default: '2.5.12')"
-    println "    -cai   Fabric CA Version (default: '1.5.15')"
-    println  
+    println "    -i     FabricVersion (default: '2.5.16')"
+    println "    -cai   Fabric CA Version (default: '1.5.21')"
+    println
   elif [ "$USAGE" == "up" ]; then
     println "Usage: "
     println "  network.sh \033[0;32mup\033[0m [Flags]"
@@ -109,7 +109,7 @@ function printHelp() {
     println
     println " Examples:"
     println "   network.sh deployCCAAS  -ccn basicj -ccp ../asset-transfer-basic/chaincode-java"
-    println "   network.sh deployCCAAS  -ccn basict -ccp ../asset-transfer-basic/chaincode-typescript -ccaasdocker false" 
+    println "   network.sh deployCCAAS  -ccn basict -ccp ../asset-transfer-basic/chaincode-typescript -ccaasdocker false"
   elif [ "$USAGE" == "cc" ] ; then
     println "Usage: "
     println "  network.sh cc <Mode> [Flags]"
@@ -121,7 +121,7 @@ function printHelp() {
     println "      \033[0;32mquery\033[0m - execute an query operation"
     println
     println "    Flags:"
-    println "    -org <number>     - Org number for the executing the command (1,2,etc) (default is 1)."    
+    println "    -org <number>     - Org number for the executing the command (1,2,etc) (default is 1)."
     println "    -c <channel name> - Name of channel"
     println "    -ccn <name>       - Chaincode name."
     println "    -ccl <language>   - Programming language of chaincode to deploy: go, java, javascript, typescript"
@@ -159,8 +159,8 @@ function printHelp() {
     println
     println "    Flags:"
     println "    Used with \033[0;32mnetwork.sh prereq\033[0m"
-    println "    -i     FabricVersion (default: '2.5.12')"
-    println "    -cai   Fabric CA Version (default: '1.5.15')"
+    println "    -i     FabricVersion (default: '2.5.16')"
+    println "    -cai   Fabric CA Version (default: '1.5.21')"
     println
     println "    Used with \033[0;32mnetwork.sh up\033[0m, \033[0;32mnetwork.sh createChannel\033[0m:"
     println "    -ca - Use Certificate Authorities to generate network crypto material"
@@ -207,21 +207,21 @@ function installPrereqs() {
 
   infoln "installing prereqs"
 
-  FILE=../install-fabric.sh     
+  FILE=../install-fabric.sh
   if [ ! -f $FILE ]; then
     curl -sSLO https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/install-fabric.sh && chmod +x install-fabric.sh
     cp install-fabric.sh ..
   fi
-  
+
   IMAGE_PARAMETER=""
   if [ "$IMAGETAG" != "default" ]; then
     IMAGE_PARAMETER="-f ${IMAGETAG}"
-  fi 
+  fi
 
   CA_IMAGE_PARAMETER=""
   if [ "$CA_IMAGETAG" != "default" ]; then
     CA_IMAGE_PARAMETER="-c ${CA_IMAGETAG}"
-  fi 
+  fi
 
   cd ..
   ./install-fabric.sh ${IMAGE_PARAMETER} ${CA_IMAGE_PARAMETER} docker binary

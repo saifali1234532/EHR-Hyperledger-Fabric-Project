@@ -20,45 +20,67 @@ jobs:
     runs-on: ${{ github.repository == 'hyperledger/fabric-samples' && 'fabric-ubuntu-22.04' || 'ubuntu-22.04' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Test the network
+        id: run-test
         working-directory: test-network-k8s
         run: ../ci/scripts/run-k8s-test-network-basic.sh
         env:
           CLIENT_LANGUAGE: typescript
           CHAINCODE_LANGUAGE: java
+      - name: Upload failure logs
+        if: ${{ failure() && steps.run-test.conclusion == 'failure' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ${{ github.job }}-logs
+          path: test-network-k8s/network-debug.log
 
   ccaas-external:
     runs-on: ${{ github.repository == 'hyperledger/fabric-samples' && 'fabric-ubuntu-22.04' || 'ubuntu-22.04' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Test the network
+        id: run-test
         working-directory: test-network-k8s
         run: ../ci/scripts/run-k8s-test-network-basic.sh
         env:
           CLIENT_LANGUAGE: typescript
           CHAINCODE_LANGUAGE: external
+      - name: Upload failure logs
+        if: ${{ failure() && steps.run-test.conclusion == 'failure' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ${{ github.job }}-logs
+          path: test-network-k8s/network-debug.log
 
   k8s-builder:
     runs-on: ${{ github.repository == 'hyperledger/fabric-samples' && 'fabric-ubuntu-22.04' || 'ubuntu-22.04' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Test the network
+        id: run-test
         working-directory: test-network-k8s
         run: ../ci/scripts/run-k8s-test-network-basic.sh
         env:
           CHAINCODE_NAME: basic
           CHAINCODE_LANGUAGE: java
           CHAINCODE_BUILDER: k8s
+      - name: Upload failure logs
+        if: ${{ failure() && steps.run-test.conclusion == 'failure' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ${{ github.job }}-logs
+          path: test-network-k8s/network-debug.log
 
   multi-namespace:
     runs-on: ${{ github.repository == 'hyperledger/fabric-samples' && 'fabric-ubuntu-22.04' || 'ubuntu-22.04' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Test the network
+        id: run-test
         working-directory: test-network-k8s
         run: ../ci/scripts/run-k8s-test-network-basic.sh
         env:
@@ -68,6 +90,12 @@ jobs:
           CHAINCODE_NAME: basic
           CHAINCODE_LANGUAGE: java
           CHAINCODE_BUILDER: k8s
+      - name: Upload failure logs
+        if: ${{ failure() && steps.run-test.conclusion == 'failure' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ${{ github.job }}-logs
+          path: test-network-k8s/network-debug.log
 
   bft-orderer:
     runs-on: ${{ github.repository == 'hyperledger/fabric-samples' && 'fabric-ubuntu-22.04' || 'ubuntu-22.04' }}
@@ -76,8 +104,9 @@ jobs:
     if: ${{ github.ref == 'refs/heads/main' || github.event.pull_request.base.ref == 'main' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Test the network
+        id: run-test
         working-directory: test-network-k8s
         run: ../ci/scripts/run-k8s-test-network-basic.sh
         env:
@@ -87,3 +116,9 @@ jobs:
           # To test BFT Orderers, Fabric v3.x is explicitly specified here.
           FABRIC_VERSION: '3.1'
           ORDERER_TYPE: bft
+      - name: Upload failure logs
+        if: ${{ failure() && steps.run-test.conclusion == 'failure' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ${{ github.job }}-logs
+          path: test-network-k8s/network-debug.log
