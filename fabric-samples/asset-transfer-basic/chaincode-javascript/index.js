@@ -6,7 +6,7 @@
 
 'use strict';
 
-const ehrChainCode = require('./lib/ehrChainCode');
+const assetTransfer = require('./lib/assetTransfer');
 
-module.exports.ehrChainCode = ehrChainCode;
-module.exports.contracts = [ehrChainCode];
+module.exports.AssetTransfer = assetTransfer;
+module.exports.contracts = [assetTransfer];
